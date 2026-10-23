@@ -1,0 +1,29 @@
+[
+  {
+    "test_case_id": "TC-BVA-01",
+    "endpoint": "/users",
+    "method": "POST",
+    "target_field": "username",
+    "mutation_type": "minLength_violation",
+    "payload": { "username": "ab", "age": 25 },
+    "expected_status": 400
+  },
+  {
+    "test_case_id": "TC-BVA-02",
+    "endpoint": "/users",
+    "method": "POST",
+    "target_field": "age",
+    "mutation_type": "minimum_boundary_below",
+    "payload": { "username": "valid_user", "age": 17 },
+    "expected_status": 400
+  },
+  {
+    "test_case_id": "TC-MUT-03",
+    "endpoint": "/users",
+    "method": "POST",
+    "target_field": "age",
+    "mutation_type": "type_mismatch_string",
+    "payload": { "username": "valid_user", "age": "twenty_five" },
+    "expected_status": 400
+  }
+]
