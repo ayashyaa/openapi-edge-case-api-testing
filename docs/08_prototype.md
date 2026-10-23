@@ -21,6 +21,9 @@ python -m openapi_edge_tester generate --spec config/petstore_sample.json --out 
 ### 2.3. Export Execution Summary Report
 ```bash
 python -m openapi_edge_tester report --input config/execution_report.json --format html --out report.html
+```
+
+---
 
 ## 3. Prototype Artifact References
 Sample OpenAPI Spec: config/petstore_sample.json
