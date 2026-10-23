@@ -9,7 +9,7 @@ Automated API contract testing tool that generates realistic boundary and edge-c
 
 ## 📂 Project Structure
 * `config/` - System and test runner configurations
-* `diagrams/` - System architecture diagrams (.drawio, .png)
+* `diagrams/` - System architecture diagrams 
 * `docs/` - Academic documentation and pre-defense deliverables
 * `src/` - Core source code (Parser, Generator, Runner, Reporter)
 * `tests/` - Unit and integration tests
