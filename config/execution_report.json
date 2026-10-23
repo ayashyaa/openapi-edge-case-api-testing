@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-10-23T18:30:00Z",
+  "target_api": "http://localhost:8000",
+  "total_tests": 3,
+  "passed": 2,
+  "failed": 1,
+  "contract_violations": [
+    {
+      "test_case_id": "TC-BVA-01",
+      "endpoint": "/users",
+      "payload_sent": { "username": "ab", "age": 25 },
+      "expected_status": 400,
+      "actual_status": 500,
+      "issue": "Contract Violation: Server returned 500 Internal Error instead of 400 Bad Request on boundary payload."
+    }
+  ]
+}
