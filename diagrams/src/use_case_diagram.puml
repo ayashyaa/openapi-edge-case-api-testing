@@ -1,0 +1,85 @@
+
+@startuml OpenAPI_Use_Case_Diagram
+
+title Use Case Diagram - OpenAPI Edge-Case Testing System
+
+left to right direction
+
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam linetype ortho
+skinparam nodesep 35
+skinparam ranksep 45
+skinparam defaultTextAlignment center
+skinparam ArrowColor #526579
+skinparam ActorBorderColor #3973AC
+skinparam ActorFontColor #1F2937
+skinparam UsecaseBackgroundColor #EAF2FF
+skinparam UsecaseBorderColor #3973AC
+skinparam UsecaseFontColor #1F2937
+skinparam RectangleBorderColor #526579
+
+actor "QA Engineer /\nDeveloper" as QA
+actor "CI/CD Pipeline" as CICD
+actor "Target REST API\n(System Under Test)" as SUT
+
+rectangle "OpenAPI Edge-Case Testing System" {
+
+    usecase "Load Configuration\n& CLI Parameters" as UC1
+    usecase "Parse OpenAPI\nSpecification" as UC2
+    usecase "Resolve $ref &\nExtract Constraints" as UC3
+
+    usecase "Generate Valid\nPayloads" as UC4
+    usecase "Generate Boundary\nPayloads" as UC5
+    usecase "Generate Invalid\nPayloads" as UC6
+    usecase "Apply Single\nFault Isolation" as UC7
+
+    usecase "Execute HTTP\nTest Requests" as UC8
+    usecase "Handle Timeouts\n& Retries" as UC9
+
+    usecase "Validate Responses\nAgainst Schema" as UC10
+    usecase "Classify Defects\n& HTTP Errors" as UC11
+
+    usecase "Generate Reproducible\ncURL Commands" as UC12
+    usecase "Export Reports\n(HTML / JSON / JUnit)" as UC13
+}
+
+' Actor interactions
+QA -- UC1
+QA -- UC12
+QA -- UC13
+
+CICD -- UC1
+CICD -- UC13
+
+' Configuration and specification
+UC1 ..> UC2 : <<include>>
+UC2 ..> UC3 : <<include>>
+
+' Test data generation
+UC4 ..> UC2 : <<include>>
+UC5 ..> UC2 : <<include>>
+UC6 ..> UC2 : <<include>>
+UC6 ..> UC7 : <<include>>
+
+' Test execution
+UC8 ..> UC9 : <<include>>
+
+' Response validation and defect analysis
+UC10 ..> UC8 : <<include>>
+UC11 ..> UC10 : <<include>>
+
+' Reporting
+UC12 ..> UC11 : <<extend>>
+UC13 ..> UC11 : <<include>>
+
+' Layout hints
+UC1 -[hidden]down- UC4
+UC4 -[hidden]down- UC8
+UC8 -[hidden]down- UC10
+UC10 -[hidden]down- UC13
+
+' API interaction
+SUT -- UC8 : HTTP requests /\nresponses
+
+@enduml

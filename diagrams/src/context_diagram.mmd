@@ -1,0 +1,23 @@
+graph TD
+    subgraph Users_And_Automation["Users & Automation"]
+        QA["QA Engineer / Developer"]
+        CICD["CI/CD Pipeline (GitHub Actions / GitLab CI)"]
+    end
+
+    subgraph Core_System["Core System Boundary"]
+        System["OpenAPI Edge-Case Testing System"]
+    end
+
+    subgraph External_Systems["External Systems & Inputs"]
+        Spec["OpenAPI / Swagger Spec (.json / .yaml)"]
+        SUT["Target REST API (System Under Test)"]
+        Reports["Artifact Storage / Dashboard (HTML, JSON, JUnit)"]
+    end
+
+    QA -->|1. Runs CLI & configures test run| System
+    CICD -->|Triggers automated run| System
+    System -->|2. Parses contract & constraints| Spec
+    System -->|3. Sends HTTP test payloads| SUT
+    SUT -->|4. Returns HTTP response| System
+    System -->|5. Exports defect reports & cURL| Reports
+    QA -->|6. Inspects HTML dashboard & logs| Reports

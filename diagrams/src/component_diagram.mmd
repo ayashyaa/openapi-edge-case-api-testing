@@ -1,0 +1,62 @@
+
+flowchart TB
+
+    subgraph CLI_Layer["CLI & Configuration"]
+        direction TB
+        CLI["CLI & Config Loader<br/><i>Parses flags and loads config.yaml</i>"]
+    end
+
+    subgraph Parser_Layer["Specification Parsing"]
+        direction TB
+        Parser["OpenAPI Spec Parser & Resolver<br/><i>Resolves $ref and extracts schemas and constraints</i>"]
+    end
+
+    subgraph Generation_Layer["Payload Synthesis"]
+        direction TB
+        GenEngine["Test Data Generator Engine"]
+        ValidGen["Valid Payload Builder"]
+        BoundGen["Boundary Value Synthesizer"]
+        MutGen["Mutation / Negative Testing Engine"]
+
+        GenEngine --> ValidGen
+        GenEngine --> BoundGen
+        GenEngine --> MutGen
+    end
+
+    subgraph Execution_Layer["Test Execution"]
+        direction TB
+        ExecEngine["Execution Engine<br/><i>HTTP Dispatcher, Timeouts, Retries</i>"]
+    end
+
+    subgraph Validation_Layer["Validation & Classification"]
+        direction TB
+        ValClassifier["Contract Validator & Defect Classifier<br/><i>Schema Validation, Crash Detection, Error Classification</i>"]
+    end
+
+    subgraph Reporting_Layer["Reporting"]
+        direction TB
+        Reporter["Reporting Engine<br/><i>cURL Exporter, HTML Dashboard, JUnit XML</i>"]
+    end
+
+    TargetAPI["Target REST API<br/>(System Under Test)"]
+    Artifacts["Report Files<br/>(JSON / HTML / JUnit XML / cURL)"]
+
+    CLI -->|"1. Initialize workflow"| Parser
+    Parser -->|"2. Extract schemas and constraints"| GenEngine
+    GenEngine -->|"3. Generate test payloads"| ExecEngine
+    ExecEngine -->|"4. Send HTTP requests"| TargetAPI
+    TargetAPI -->|"5. Return HTTP responses"| ExecEngine
+    ExecEngine -->|"6. Pass responses for validation"| ValClassifier
+    Parser -->|"Response schemas"| ValClassifier
+    ValClassifier -->|"7. Classify defects"| Reporter
+    Reporter -->|"8. Export artifacts"| Artifacts
+
+    style CLI_Layer fill:#EAF2FF,stroke:#648BD8,stroke-width:1px
+    style Parser_Layer fill:#F0EAFF,stroke:#9673D3,stroke-width:1px
+    style Generation_Layer fill:#E5F7ED,stroke:#48A878,stroke-width:1px
+    style Execution_Layer fill:#FFF4E5,stroke:#D9A04B,stroke-width:1px
+    style Validation_Layer fill:#FCE8E6,stroke:#D96C60,stroke-width:1px
+    style Reporting_Layer fill:#E6F4F7,stroke:#4D9BA8,stroke-width:1px
+
+    style TargetAPI fill:#FFFFFF,stroke:#64748B,stroke-width:2px
+    style Artifacts fill:#FFFFFF,stroke:#64748B,stroke-width:2px
